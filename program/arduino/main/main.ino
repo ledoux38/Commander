@@ -1,30 +1,21 @@
 
 #include <ESP8266WiFi.h>
+#include <ArduinoJson.h>
 
 // WiFi Router Login - change these to your router settings
-const char* SSID = "x";
-const char* password = "x";
+const char* SSID = "";
+const char* password = "";
+const size_t CAPACITY = JSON_ARRAY_SIZE(3);
 
-// Setup GPIO2
-int pinGPIO2 = 2; //To control LED
-int ledStatus = 0; //0=off,1=on,2=dimmed
+StaticJsonDocument<CAPACITY> doc;
 
-// Create the ESP Web Server on port 80
 WiFiServer WebServer(80);
-// Web Client
 WiFiClient client;
 
 void setup() {
   Serial.begin(115200);
   delay(10);
   Serial.println();
-  Serial.println();
-  Serial.println(codeVersion);
-
-  // Setup the GPIO2 LED Pin - this demo also uses PWM to dim the LED.
-  pinMode(pinGPIO2, OUTPUT);
-  digitalWrite(pinGPIO2, LOW);
-  ledStatus = 0;
 
   // Connect to WiFi network
   Serial.println();
@@ -34,6 +25,7 @@ void setup() {
   Serial.println(SSID);
   WiFi.begin(SSID, password);
 
+  
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -70,55 +62,13 @@ void loop() {
   Serial.println(request);
   client.flush();
 
-  // Process the request:
-  if (request.indexOf("/LED=ON") != -1) {
-    analogWrite(pinGPIO2, 1023);
-    ledStatus = 1;
-  }
-  if (request.indexOf("/LED=OFF") != -1) {
-    analogWrite(pinGPIO2, 0);
-    ledStatus = 0;
-  }
-  if (request.indexOf("/LED=DIM") != -1) {
-    analogWrite(pinGPIO2, 512);
-    ledStatus = 2;
-  }
-
   // Return the response
-  client.println("HTTP/1.1 200 OK");
-  client.println("Content-Type: application/json; charset=UTF-8");
-  client.println("");
-  client.println("<!DOCTYPE HTML>");
-  client.println("<html>");
-  client.println("<head>");
-  client.println("<title>ESP8266 Demo</title>");
-  client.println("</head>");
-  client.println("<body>");
-  client.println("<a href=\"/\">Refresh Status</a>");
-  client.println("</br></br>");
+  JsonArray array = doc.to<JsonArray>();
+  array.add("hello");
+  array.add(42);
+  array.add(3.14);
 
-  //check the LED status
-  if (ledStatus == 0) {
-    client.print("LED is Off</br>");
-    client.println("Turn the LED <a href=\"/LED=ON\">ON</a></br>");
-    client.println("Set LED to <a href=\"/LED=DIM\">DIM</a></br>");
-  } else if (ledStatus == 1) {
-    client.print("LED is On</br>");
-    client.println("Turn the LED <a href=\"/LED=OFF\">OFF</a></br>");
-    client.println("Set LED to <a href=\"/LED=DIM\">DIM</a></br>");
-  } else if (ledStatus == 2) {
-    client.print("LED is Dimmed</br>");
-    client.println("Turn the LED <a href=\"/LED=OFF\">OFF</a></br>");
-    client.println("Turn the LED <a href=\"/LED=ON\">ON</a></br>");
-  }
-
-  client.println("</br>");
-  client.println("<a href=\"http://www.instructables.com/id/ESP8266-WiFi-Module-for-Dummies/\" target=\"_blank\">See the Instructables Page: ESP8266 WiFi Module for Dummies</a></br>");
-  client.println("<a href=\"http://www.instructables.com/id/The-Simple-Guide-to-Flashing-Your-ESP8266-Firmware/\" target=\"_blank\">See the Instructables Page: The Simple Guide to Flashing Your ESP8266 Firmware</a></br>");
-
-  client.println("</br>");
-  client.println("</body>");
-  client.println("</html>");
+  serializeJson(doc, client);
 
   delay(1);
   Serial.println("User disconnected");
