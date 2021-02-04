@@ -6,12 +6,12 @@
 const char* SSID = "Livebox-B6DE";
 const char* password = "vJKCMEXyJmmmDNpDJC";
 
-// Settings JSON
 const size_t CAPACITY = JSON_ARRAY_SIZE(3);
 StaticJsonDocument<CAPACITY> doc;
 
-// Settings SERVER/CLIENT
+// Create the ESP Web Server on port 80
 WiFiServer WebServer(80);
+// Web Client
 WiFiClient client;
 
 // INPUT - OUTPUT
@@ -25,10 +25,9 @@ int GPIO6 = 14;
 int GPIO7 = 12;
 int GPIO8 = 13;
 
-
 void setup() {
-  Serial.begin(115200);
-
+  Serial.begin(9600);
+  
   pinMode(GPIO1, OUTPUT); 
   pinMode(GPIO2, OUTPUT); 
   pinMode(GPIO3, OUTPUT); 
@@ -38,6 +37,9 @@ void setup() {
   pinMode(GPIO6, INPUT); 
   pinMode(GPIO7, INPUT); 
   pinMode(GPIO8, INPUT); 
+  
+  delay(10);
+
 
   // Connect to WiFi network
   Serial.println();
@@ -47,7 +49,6 @@ void setup() {
   Serial.println(SSID);
   WiFi.begin(SSID, password);
 
-  
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -79,13 +80,11 @@ void loop() {
     delay(1);
   }
 
-  // Read the first line of the request
-  String request = client.readStringUntil('\r\n');
-  Serial.println(request);
-  client.flush();
-
-  
   // Return the response
+  client.println("HTTP/1.1 200 OK");
+  client.println("Content-Type: application/json");
+  client.println("");
+
   StaticJsonDocument<200> doc;
   
   JsonArray input = doc.createNestedArray("input");
@@ -99,12 +98,10 @@ void loop() {
   output.add(digitalRead(GPIO6));
   output.add(digitalRead(GPIO7));
   output.add(digitalRead(GPIO8));
-
+  
   serializeJson(doc, client);
-
+  
   delay(1);
-
-  client.stop();
   Serial.println("User disconnected");
   Serial.println("");
 
