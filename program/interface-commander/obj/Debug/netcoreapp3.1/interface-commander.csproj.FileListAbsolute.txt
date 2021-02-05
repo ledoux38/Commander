@@ -1,0 +1,11 @@
+/home/ledoux/Documents/DEV_PERSO/Commander/program/interface-commander/interface-commander/interface-commander/bin/Debug/netcoreapp3.1/interface-commander
+/home/ledoux/Documents/DEV_PERSO/Commander/program/interface-commander/interface-commander/interface-commander/bin/Debug/netcoreapp3.1/interface-commander.deps.json
+/home/ledoux/Documents/DEV_PERSO/Commander/program/interface-commander/interface-commander/interface-commander/bin/Debug/netcoreapp3.1/interface-commander.runtimeconfig.json
+/home/ledoux/Documents/DEV_PERSO/Commander/program/interface-commander/interface-commander/interface-commander/bin/Debug/netcoreapp3.1/interface-commander.runtimeconfig.dev.json
+/home/ledoux/Documents/DEV_PERSO/Commander/program/interface-commander/interface-commander/interface-commander/bin/Debug/netcoreapp3.1/interface-commander.dll
+/home/ledoux/Documents/DEV_PERSO/Commander/program/interface-commander/interface-commander/interface-commander/bin/Debug/netcoreapp3.1/interface-commander.pdb
+/home/ledoux/Documents/DEV_PERSO/Commander/program/interface-commander/interface-commander/interface-commander/obj/Debug/netcoreapp3.1/interface-commander.csprojAssemblyReference.cache
+/home/ledoux/Documents/DEV_PERSO/Commander/program/interface-commander/interface-commander/interface-commander/obj/Debug/netcoreapp3.1/interface-commander.AssemblyInfoInputs.cache
+/home/ledoux/Documents/DEV_PERSO/Commander/program/interface-commander/interface-commander/interface-commander/obj/Debug/netcoreapp3.1/interface-commander.AssemblyInfo.cs
+/home/ledoux/Documents/DEV_PERSO/Commander/program/interface-commander/interface-commander/interface-commander/obj/Debug/netcoreapp3.1/interface-commander.dll
+/home/ledoux/Documents/DEV_PERSO/Commander/program/interface-commander/interface-commander/interface-commander/obj/Debug/netcoreapp3.1/interface-commander.pdb
