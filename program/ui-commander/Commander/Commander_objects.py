@@ -12,6 +12,8 @@ class Carte:
 
 
 class GPIO:
+    __slots__ = ('gpio_type', 'name', 'value')
+
     def __init__(self, gpio_type: GPIOType, name: str, value: bool):
 
         if type(gpio_type) is not GPIOType:

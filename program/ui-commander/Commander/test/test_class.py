@@ -14,3 +14,8 @@ class TestGPIO(TestCase):
     def test_new_class_with_not_good_parameters(self):
         with self.assertRaises(TypeError):
             test_object: GPIO = GPIO("test", "test", "test")
+
+    def test_new_method(self):
+        test_object: GPIO = GPIO(GPIOType.INPUT, "test", True)
+        with self.assertRaises(AttributeError):
+            test_object.test = "test"
