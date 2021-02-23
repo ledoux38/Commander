@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from Commander.Commander_objects import GPIO, GPIOType, Electronic_card
+from Commander.Commander_objects import Electronic_card
 
 
 class TestElectronicCard(TestCase):
@@ -18,3 +18,9 @@ class TestElectronicCard(TestCase):
         test_object: Electronic_card = Electronic_card("test")
         with self.assertRaises(AttributeError):
             test_object.test = "test"
+
+    def test_add_gpio(self):
+        test_object: Electronic_card = Electronic_card("test")
+        val: int = 6566
+        with self.assertRaises(TypeError):
+            test_object.gpios.append(val)

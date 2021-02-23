@@ -36,5 +36,15 @@ class Electronic_card:
     def __init__(self, name):
         if type(name) is not str:
             raise TypeError(name)
+
         self.gpios: [] = []
         self.name = name
+
+    @property
+    def gpios(self):
+        return self.__gpios
+
+    @gpios.setter
+    def gpios(self, val: GPIO):
+        if type(val) is not GPIO:
+            raise TypeError(val)
