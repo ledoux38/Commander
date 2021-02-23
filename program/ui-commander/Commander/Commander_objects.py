@@ -28,3 +28,13 @@ class GPIO:
         self.gpio_type: GPIOType = gpio_type
         self.name: str = name
         self.value: bool = value
+
+
+class Electronic_card:
+    __slots__ = ('name', 'gpios')
+
+    def __init__(self, name):
+        if type(name) is not str:
+            raise TypeError(name)
+        self.gpios: [] = []
+        self.name = name
