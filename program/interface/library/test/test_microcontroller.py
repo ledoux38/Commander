@@ -1,6 +1,6 @@
 from unittest import TestCase
-from interface.library.Microcontroller import Card
-from interface.library.Peripheral import GPIO, GPIOType
+from library.Microcontroller import Card
+from library.Peripheral import GPIO, GpioType
 
 
 class Test_microcontroller(TestCase):
@@ -21,10 +21,10 @@ class Test_microcontroller(TestCase):
 
     def test_set_gpio(self):
         test_object: Card = Card("test")
-        test_object.add_gpio(GPIO(GPIOType.INPUT, "test", True))
-        test_object.set_gpio(0, GPIO(GPIOType.INPUT, "test", False))
+        test_object.add_gpio(GPIO(GpioType.INPUT, "test", True))
+        test_object.set_gpio(0, GPIO(GpioType.INPUT, "test", False))
         self.assertEqual(len(test_object.get_all_gpio()), 1)
-        self.assertEqual(test_object.get_gpio(0).value, False)
+        self.assertEqual(test_object.get_gpio(0).get_value(), False)
 
     def test_get_gpio(self):
         test_object: Card = Card("test")
