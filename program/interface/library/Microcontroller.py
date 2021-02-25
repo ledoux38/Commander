@@ -1,14 +1,14 @@
-from Commander import GPIO
+from interface.library.Peripheral import GPIO
 
 
-class Electronic_card:
+class Card:
     __slots__ = ('name', 'gpio')
 
     def __init__(self, name):
         if type(name) is not str:
             raise TypeError(name)
 
-        self.gpio: list = {}
+        self.gpio: list = []
         self.name = name
 
     def get_gpio(self, index: int) -> GPIO:
@@ -19,6 +19,7 @@ class Electronic_card:
         print("set")
         if type(val) is not GPIO:
             raise TypeError(val)
+        self.gpio[index] = val
 
     def add_gpio(self, val: GPIO):
         print("add")
@@ -27,4 +28,4 @@ class Electronic_card:
 
         self.gpio.append(val)
 
-    property(get_gpios, add_gpio)
+    property(get_gpio, add_gpio)
