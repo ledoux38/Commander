@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from Commander.Commander_objects import GPIO, GPIOType
+from Commander.GPIO import GPIO, GPIOType
 
 
 class TestGPIO(TestCase):
