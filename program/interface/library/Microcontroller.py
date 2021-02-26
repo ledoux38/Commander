@@ -1,4 +1,4 @@
-from library.Peripheral import GPIO
+from program.interface.library.Peripheral import GPIO
 
 
 class Card:
