@@ -1,16 +1,25 @@
-# This is a sample Python script.
+from program.interface.library.Functions import scanner
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    addresses = []
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    """ On définit une plage d'adresses IP à scanner """
+    for ping in range(1, 254):
+        addresses.append("192.168.0." + str(ping))
+
+    threads = []
+
+    """ On créée autant de threads qu'il y à d'adresses IP à scanner """
+    netscanthreads = [NetscanThread(address) for address in addresses]
+    for thread in netscanthreads :
+        """ Chaque thread est démarré en même temps """
+        thread.start()
+        threads.append(thread)
+
+    for t in threads:
+        t.join()
+
+    """ On affiche le résultat qui affiche pour chaque machine connectée son nom d'hôte """
+    for address, hostname in host.items():
+        if (hostname != None):
+            print(address, '=>', hostname)
