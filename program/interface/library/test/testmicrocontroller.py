@@ -1,9 +1,9 @@
 from unittest import TestCase
-from library.Microcontroller import Card
-from library.Peripheral import GPIO, GpioType
+from program.interface.library.Microcontroller import Card
+from program.interface.library.Peripheral import GPIO, GpioType
 
 
-class Test_microcontroller(TestCase):
+class TestMicrocontroller(TestCase):
 
     def test_new_class_with_good_parameters(self):
         test_object: Card = Card("test")
