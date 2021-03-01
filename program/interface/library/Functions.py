@@ -1,40 +1,30 @@
-import socket
-import threading
-
-Hosts = {}
+import os
+import platform
 
 
-class Scanner(threading.Thread):
-    '''https://tutoriels.pecaudchristopher.com/tutoriels_windows/espace_python/Tutoriel_Creation_Scanner_IP_Python.php'''
-    def __init__(self, addr: str):
-        self.addr = addr
-        threading.Thread.__init__(self)
+class Utils(object):
+    @staticmethod
+    def Scanner(base_addr: string, min: int, max: int) -> list:
+        ip_returned: list = []
+        base_adder_split: [] = base_addr.split('.')
+        new_addr: str = base_adder_split[0] + '.' + base_adder_split[1] + '.' + base_adder_split[2] + '.'
 
-    def run(self):
-        self.lookup(self.addr)
+        sys_os = platform.system()
 
-    def lookup(self, addr:str):
-        try:
-            hostname, alias, _ = socket.gethostbyaddr(addr)
-            global host
-            host[address] = hostname
+        if (sys_os == "Windows"):
+            cmd_ping = "ping -n 1 "
+        elif (sys_os == "Linux"):
+            cmd_ping = "ping -c 1 "
+        else:
+            cmd_ping = "ping -c 1 "
 
-        except socket.herror:
-            host[address] = None
+        for ip in range(min, max):
+            addr = new_addr + str(ip)
+            comm = cmd_ping + addr
+            response = os.popen(comm)
 
+            for line in response.readlines():
+                if (line.count("ttl")):
+                    ip_returned.append(addr)
 
-
-
-    def scanner(self):
-        for ping in range(1, 254):
-            address = "192.168.1." + str(ping)
-            socket.setdefaulttimeout(1)
-
-            try:
-                hostname, alias, addresslist = socket.gethostbyaddr(address)
-            except socket.herror:
-                hostname = None
-                alias = None
-                addresslist = address
-
-            print(addresslist, '=>', hostname)
+        return ip_returned
