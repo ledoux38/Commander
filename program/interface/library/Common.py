@@ -4,7 +4,7 @@ import platform
 
 class Utils(object):
     @staticmethod
-    def Scanner(base_addr: string, min: int, max: int) -> list:
+    def Scanner(base_addr: str, min: int, max: int) -> list:
         ip_returned: list = []
         base_adder_split: [] = base_addr.split('.')
         new_addr: str = base_adder_split[0] + '.' + base_adder_split[1] + '.' + base_adder_split[2] + '.'
@@ -28,3 +28,7 @@ class Utils(object):
                     ip_returned.append(addr)
 
         return ip_returned
+
+
+if __name__ == '__main__':
+    print(Utils.Scanner("182.168.1", 20, 25))
