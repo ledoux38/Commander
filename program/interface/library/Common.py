@@ -1,8 +1,17 @@
 import os
 import platform
+import ipaddress
 
 
 class Utils(object):
+    @staticmethod
+    def Check_ip_is_valid(ip: str) -> bool:
+        try:
+            ipaddress.ip_address(ip)
+            return True
+        except ValueError:
+            return False
+
     @staticmethod
     def Scanner(base_addr: str, min: int, max: int) -> list:
         ip_returned: list = []
