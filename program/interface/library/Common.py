@@ -1,6 +1,7 @@
 import os
 import platform
 import ipaddress
+from ping3 import ping, verbose_ping
 
 
 class Utils(object):
@@ -13,27 +14,18 @@ class Utils(object):
             return False
 
     @staticmethod
-    def Scanner(base_addr: str, min: int, max: int) -> list:
+    def Scanner(addr: str, max: int) -> list:
         ip_returned: list = []
-        base_adder_split: [] = base_addr.split('.')
-        new_addr: str = base_adder_split[0] + '.' + base_adder_split[1] + '.' + base_adder_split[2] + '.'
-
-        sys_os = platform.system()
-
-        if (sys_os == "Windows"):
-            cmd_ping = "ping -n 1 "
-        elif (sys_os == "Linux"):
-            cmd_ping = "ping -c 1 "
+        if Utils.Check_ip_is_valid(addr):
+            min: int = int(addr.split(".")[3])
+            if min > max:
+                raise ValueError(srt(min) + ">" + str(max))
+            for num in range(min, max):
+                ip: str = new_addr + str(num)
+                response = ping(ip)
+                if response is not None and response != False:
+                    ip_returned.append(ip)
         else:
-            cmd_ping = "ping -c 1 "
-
-        for ip in range(min, max):
-            addr = new_addr + str(ip)
-            comm = cmd_ping + addr
-            response = os.popen(comm)
-
-            for line in response.readlines():
-                if (line.count("ttl")):
-                    ip_returned.append(addr)
+            raise ValueError(addr)
 
         return ip_returned
