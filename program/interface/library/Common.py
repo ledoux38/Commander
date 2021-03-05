@@ -1,6 +1,8 @@
 import os
 import platform
 import ipaddress
+from .Settings import *
+
 from ping3 import ping, verbose_ping
 
 
@@ -22,11 +24,21 @@ class Utils(object):
             raise ValueError(str(min) + ">" + str(max))
         for num in range(min, max):
             ip.Set_value_by_index(3, num)
-            response = ping(ip.__str__())
+            ip_ping: str = ip.__str__()
+            response = Utils.Ping(ip_ping)
             if response is not None and response != False:
-                ip_returned.append(ip.__str__())
+                ip_returned.append(ip_ping)
 
         return ip_returned
+
+    @staticmethod
+    def Ping(addr: str):
+        oper = platform.system()
+        response = os.popen(PING_SYSTEM[oper] + addr)
+        for line in response.readlines():
+            if (line.count("ttl")):
+                print(addr, "--> Live")
+
 
 
 class Ip(object):
