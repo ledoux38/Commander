@@ -1,6 +1,7 @@
 import os
 import platform
 import ipaddress
+import socket
 from .Settings import *
 
 from ping3 import ping, verbose_ping
@@ -17,28 +18,28 @@ class Utils(object):
 
     @staticmethod
     def Scanner(addr: str, max: int) -> list:
-        ip_returned: list = []
-        ip: Ip = Ip(addr)
-        min: int = int(ip.Get_value_by_index(3))
+        list_ip_ok: list = []
+        address_converted_to_ip: Ip = Ip(addr)
+        min: int = int(address_converted_to_ip.Get_value_by_index(3))
         if min > max:
             raise ValueError(str(min) + ">" + str(max))
         for num in range(min, max):
-            ip.Set_value_by_index(3, num)
-            ip_ping: str = ip.__str__()
-            response = Utils.Ping(ip_ping)
-            if response is not None and response != False:
-                ip_returned.append(ip_ping)
+            address_converted_to_ip.Set_value_by_index(3, num)
+            if Utils.Connection_to_IP(str(address_converted_to_ip), PORT):
+                list_ip_ok.append(str(address_converted_to_ip))
 
-        return ip_returned
+        return list_ip_ok
 
     @staticmethod
-    def Ping(addr: str):
-        oper = platform.system()
-        response = os.popen(PING_SYSTEM[oper] + addr)
-        for line in response.readlines():
-            if (line.count("ttl")):
-                print(addr, "--> Live")
-
+    def Connection_to_IP(addr: str, port: int) -> bool:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        socket.setdefaulttimeout(1)
+        result = s.connect_ex((addr, port))
+        s.close()
+        if result == 0:
+            return 1
+        else:
+            return 0
 
 
 class Ip(object):

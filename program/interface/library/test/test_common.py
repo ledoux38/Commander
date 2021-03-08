@@ -13,7 +13,7 @@ class Test_Utils(TestCase):
         self.assertEqual(Utils.Check_ip_is_valid('192.168.1.'), False)
 
     def test_Scanner(self):
-        Utils.Scanner('192.168.1.20', 23)
+        print(Utils.Scanner('192.168.1.20', 23))
 
 
 
