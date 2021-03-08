@@ -22,9 +22,13 @@ class Test_Ip(TestCase):
         val: Ip = Ip('192.168.1.22')
         self.assertEqual(val.Get_ip(), ['192', '168', '1', '22'])
 
-    def test_check_ip_object_with_bad_parameter(self):
+    def test_check_ip_object_with_bad_parameter_0(self):
         with self.assertRaises(ValueError):
             val: Ip = Ip('192.168.1.tototo')
+
+    def test_check_ip_object_with_bad_parameter_1(self):
+        with self.assertRaises(TypeError):
+            val: Ip = Ip(745778)
 
     def test_ip_object_str(self):
         val: Ip = Ip('192.168.1.22')

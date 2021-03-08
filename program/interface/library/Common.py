@@ -47,7 +47,7 @@ class Ip(object):
 
     def __init__(self, ip: str):
         if type(ip) != str:
-            raise TypeError(name)
+            raise TypeError(ip)
 
         self.__ip: [str] = []
 
