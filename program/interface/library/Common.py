@@ -43,7 +43,14 @@ class Utils(object):
 
 
 class Ip(object):
+    __slots__ = '__ip'
+
     def __init__(self, ip: str):
+        if type(ip) != str:
+            raise TypeError(name)
+
+        self.__ip: [str] = []
+
         self.Set_ip(ip)
 
     def __str__(self) -> str:
