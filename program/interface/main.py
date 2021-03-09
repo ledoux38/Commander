@@ -1,3 +1,5 @@
-# from library import Utils
+from library import *
+
 if __name__ == '__main__':
-    pass
+    program: Window = Window()
+    program.mainloop()
