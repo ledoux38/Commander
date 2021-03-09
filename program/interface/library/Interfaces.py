@@ -5,7 +5,7 @@ from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 
 
-class Window(Tk):
+class MainWindow(Tk):
 
     def __init__(self):
         Tk.__init__(self)
@@ -17,39 +17,21 @@ class Window(Tk):
         self.title("MyFirstMenu V1.0")
 
     def createMenuBar(self):
-        menuBar = Menu(self)
+        menu_bar = Menu(self)
 
-        menuFile = Menu(menuBar, tearoff=0)
-        menuFile.add_command(label="New", command=self.doSomething)
-        menuFile.add_command(label="Open", command=self.openFile)
-        menuFile.add_command(label="Save", command=self.doSomething)
-        menuFile.add_separator()
-        menuFile.add_command(label="Exit", command=self.quit)
-        menuBar.add_cascade(label="File", menu=menuFile)
+        menu_file = Menu(menu_bar, tearoff=0)
+        menu_file.add_command(label="Settings", command=self.Settings)
+        menu_file.add_separator()
+        menu_file.add_command(label="Exit", command=self.quit)
+        menu_bar.add_cascade(label="File", menu=menu_file)
 
-        menuEdit = Menu(menuBar, tearoff=0)
-        menuEdit.add_command(label="Undo", command=self.doSomething)
-        menuEdit.add_separator()
-        menuEdit.add_command(label="Copy", command=self.doSomething)
-        menuEdit.add_command(label="Cut", command=self.doSomething)
-        menuEdit.add_command(label="Paste", command=self.doSomething)
-        menuBar.add_cascade(label="Edit", menu=menuEdit)
+        self.config(menu=menu_bar)
 
-        menuHelp = Menu(menuBar, tearoff=0)
-        menuHelp.add_command(label="About", command=self.doAbout)
-        menuBar.add_cascade(label="Help", menu=menuHelp)
+    def Settings(self):
+        top: Toplevel = Toplevel()
+        labelframe = LabelFrame(top, text="Connection")
+        labelframe.pack(expand="no")
 
-        self.config(menu=menuBar)
-
-    def openFile(self):
-        file = askopenfilename(title="Choose the file to open",
-                               filetypes=[("PNG image", ".png"), ("GIF image", ".gif"), ("All files", ".*")])
-        print(file)
-
-    def doSomething(self):
-        print("Menu clicked")
-
-    def doAbout(self):
-        messagebox.showinfo("My title", "My message")
-
-
+        Label(labelframe, text="IP: ").pack(side=LEFT)
+        entry_ip = Entry(labelframe).pack(side=LEFT)
+        test_connection = Button(labelframe, text="Test").pack(side=LEFT)
