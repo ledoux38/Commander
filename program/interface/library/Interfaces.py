@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 from functools import partial
+from .Common import Utils
 
 
 class MainWindow(Tk):
@@ -39,4 +40,8 @@ class MainWindow(Tk):
         test_connection = Button(labelframe, text="Test", command=partial(self.Connexion, text)).pack(side=LEFT)
 
     def Connexion(self, text: StringVar):
-        print(text.get())
+        result: bool = Utils.Connection_to_IP(text.get(), 3000)
+        if result:
+            tkMessageBox.showinfo("information", "Connection ok")
+        else:
+            tkMessageBox.showerror("information", "IP n'existe pas")
