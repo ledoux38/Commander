@@ -3,6 +3,7 @@ import math
 from tkinter import *
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
+from functools import partial
 
 
 class MainWindow(Tk):
@@ -32,6 +33,10 @@ class MainWindow(Tk):
         labelframe = LabelFrame(top, text="Connection")
         labelframe.pack(expand="no")
 
+        text: StringVar = StringVar(labelframe)
         Label(labelframe, text="IP: ").pack(side=LEFT)
-        entry_ip = Entry(labelframe).pack(side=LEFT)
-        test_connection = Button(labelframe, text="Test").pack(side=LEFT)
+        entry_ip = Entry(labelframe, textvariable=text).pack(side=LEFT)
+        test_connection = Button(labelframe, text="Test", command=partial(self.Connexion, text)).pack(side=LEFT)
+
+    def Connexion(self, text: StringVar):
+        print(text.get())
