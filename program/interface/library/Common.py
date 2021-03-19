@@ -1,10 +1,7 @@
-import os
-import platform
 import ipaddress
 import socket
-from .Settings import *
 
-from ping3 import ping, verbose_ping
+from .Settings import *
 
 
 class Utils(object):
