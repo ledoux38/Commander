@@ -53,10 +53,10 @@ class MainWindow(Tk):
     def Command_view(self):
         labelframe = LabelFrame(self, text="Command")
         labelframe.pack(expand="no")
-        redbutton = Button(labelframe, text="Red", fg="red").pack(side=LEFT)
+        redbutton = Button(labelframe, text="H").grid(row=0, column=1)
 
-        greenbutton = Button(labelframe, text="Brown", fg="brown").pack(side=LEFT)
+        greenbutton = Button(labelframe, text="G").grid(row=1, column=0)
 
-        bluebutton = Button(labelframe, text="Blue", fg="blue").pack(side=LEFT)
+        bluebutton = Button(labelframe, text="D").grid(row=1, column=2)
 
-        blackbutton = Button(labelframe, text="Black", fg="black").pack(side=BOTTOM)
+        blackbutton = Button(labelframe, text="B").grid(row=2, column=1)
