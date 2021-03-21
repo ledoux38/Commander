@@ -5,6 +5,7 @@ from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 from functools import partial
 from .Common import Utils
+import http.client
 
 
 class MainWindow(Tk):
@@ -53,10 +54,18 @@ class MainWindow(Tk):
     def Command_view(self):
         labelframe = LabelFrame(self, text="Command")
         labelframe.pack(expand="no")
-        redbutton = Button(labelframe, text="H").grid(row=0, column=1)
+        high = Button(labelframe, text="H").grid(row=0, column=1)
+        left = Button(labelframe, text="G").grid(row=1, column=0)
+        right = Button(labelframe, text="D").grid(row=1, column=2)
+        low = Button(labelframe, text="B").grid(row=2, column=1)
 
-        greenbutton = Button(labelframe, text="G").grid(row=1, column=0)
-
-        bluebutton = Button(labelframe, text="D").grid(row=1, column=2)
-
-        blackbutton = Button(labelframe, text="B").grid(row=2, column=1)
+    def Send(self, order: str):
+        conn = http.client.HTTPSConnection("192.168.1.12")
+        payload = ''
+        headers = {
+            'content-type': 'application/json'
+        }
+        conn.request("POST", "/", payload, headers)
+        res = conn.getresponse()
+        data = res.read()
+        print(data.decode("utf-8"))
