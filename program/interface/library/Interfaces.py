@@ -5,7 +5,9 @@ from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 from functools import partial
 from .Common import Utils
+from .Settings import *
 import http.client
+import requests
 
 
 class MainWindow(Tk):
@@ -54,18 +56,28 @@ class MainWindow(Tk):
     def Command_view(self):
         labelframe = LabelFrame(self, text="Command")
         labelframe.pack(expand="no")
-        high = Button(labelframe, text="H").grid(row=0, column=1)
-        left = Button(labelframe, text="G").grid(row=1, column=0)
-        right = Button(labelframe, text="D").grid(row=1, column=2)
-        low = Button(labelframe, text="B").grid(row=2, column=1)
 
-    def Send(self, order: str):
-        conn = http.client.HTTPSConnection("192.168.1.12")
-        payload = ''
+        text_high: StringVar = StringVar(labelframe)
+        text_high.set("H")
+        text_left: StringVar = StringVar(labelframe)
+        text_left.set("G")
+        text_right: StringVar = StringVar(labelframe)
+        text_right.set("D")
+        text_low: StringVar = StringVar(labelframe)
+        text_low.set("B")
+
+        high = Button(labelframe, text="H", command=partial(self.Send, text_high)).grid(row=0, column=1)
+        left = Button(labelframe, text="G", command=partial(self.Send, text_left)).grid(row=1, column=0)
+        right = Button(labelframe, text="D", command=partial(self.Send, text_right)).grid(row=1, column=2)
+        low = Button(labelframe, text="B", command=partial(self.Send, text_low)).grid(row=2, column=1)
+
+    def Send(self, order: StringVar):
+        url = "http://192.168.1.12/" + order.get()
+        payload = {}
         headers = {
             'content-type': 'application/json'
         }
-        conn.request("POST", "/", payload, headers)
-        res = conn.getresponse()
-        data = res.read()
-        print(data.decode("utf-8"))
+
+        response = requests.request("POST", url, headers=headers, data=payload)
+
+        print(response.text)
