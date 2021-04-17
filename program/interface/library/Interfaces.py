@@ -14,8 +14,8 @@ class MainWindow(Tk):
 
     def __init__(self):
         Tk.__init__(self)
-        self.Menu_bar_view()
-        self.Command_view()
+        self.menu_bar_view()
+        self.command_view()
 
         # Fill the content of the window
 
@@ -24,18 +24,18 @@ class MainWindow(Tk):
 
         self.ip_active: str = ""
 
-    def Menu_bar_view(self):
+    def menu_bar_view(self):
         menu_bar = Menu(self)
 
         menu_file = Menu(menu_bar, tearoff=0)
-        menu_file.add_command(label="Settings", command=self.Settings_view)
+        menu_file.add_command(label="Settings", command=self.settings_view)
         menu_file.add_separator()
         menu_file.add_command(label="Exit", command=self.quit)
         menu_bar.add_cascade(label="File", menu=menu_file)
 
         self.config(menu=menu_bar)
 
-    def Settings_view(self):
+    def settings_view(self):
         top: Toplevel = Toplevel()
         labelframe = LabelFrame(top, text="Connection")
         labelframe.pack(expand="no")
@@ -43,9 +43,9 @@ class MainWindow(Tk):
         text: StringVar = StringVar(labelframe)
         Label(labelframe, text="IP: ").pack(side=LEFT)
         entry_ip = Entry(labelframe, textvariable=text).pack(side=LEFT)
-        test_connection = Button(labelframe, text="Test", command=partial(self.Connexion, text)).pack(side=LEFT)
+        test_connection = Button(labelframe, text="Test", command=partial(self.connexion, text)).pack(side=LEFT)
 
-    def Connexion(self, text: StringVar):
+    def connexion(self, text: StringVar):
         result: bool = Utils.Connection_to_IP(text.get(), PORT)
         if result:
             messagebox.showinfo("information", "Connection ok")
@@ -53,7 +53,7 @@ class MainWindow(Tk):
         else:
             messagebox.showerror("Error", "IP don't exist")
 
-    def Command_view(self):
+    def command_view(self):
         labelframe = LabelFrame(self, text="Command")
         labelframe.pack(expand="no")
 
@@ -66,18 +66,36 @@ class MainWindow(Tk):
         text_low: StringVar = StringVar(labelframe)
         text_low.set("B")
 
-        high = Button(labelframe, text="H", command=partial(self.Send, text_high)).grid(row=0, column=1)
-        left = Button(labelframe, text="G", command=partial(self.Send, text_left)).grid(row=1, column=0)
-        right = Button(labelframe, text="D", command=partial(self.Send, text_right)).grid(row=1, column=2)
-        low = Button(labelframe, text="B", command=partial(self.Send, text_low)).grid(row=2, column=1)
+        widget_high = Button(labelframe, text="H")
+        widget_high.grid(row=0, column=1)
+        widget_high.bind('<ButtonPress-1>', self.send(text_high))
+        widget_high.bind('<ButtonRelease-1>', self.send(text_high))
 
-    def Send(self, order: StringVar):
-        url = "http://192.168.1.12/" + order.get()
-        payload = {}
-        headers = {
-            'content-type': 'application/json'
-        }
+        widget_left = Button(labelframe, text="G")
+        widget_left.grid(row=1, column=0)
+        widget_left.bind('<ButtonPress-1>', self.send(text_high))
+        widget_left.bind('<ButtonRelease-1>', self.send(text_high))
 
-        response = requests.request("POST", url, headers=headers, data=payload)
+        widget_right = Button(labelframe, text="D")
+        widget_right.grid(row=1, column=2)
+        widget_right.bind('<ButtonPress-1>', self.send(text_high))
+        widget_right.bind('<ButtonRelease-1>', self.send(text_high))
 
-        print(response.text)
+        widget_low = Button(labelframe, text="B")
+        widget_low.grid(row=2, column=1)
+        widget_low.bind('<ButtonPress-1>', self.send(text_high))
+        widget_low.bind('<ButtonRelease-1>', self.send(text_high))
+
+    # def Send(self, order: StringVar):
+    #     url = "http://192.168.1.12/" + order.get()
+    #     payload = {}
+    #     headers = {
+    #         'content-type': 'application/json'
+    #     }
+    #
+    #     response = requests.request("POST", url, headers=headers, data=payload)
+    #
+    #     print(response.text)
+
+    def send(self, event: Event, text: StringVar):
+        print(str.format("{0}::{1}", event, text))
