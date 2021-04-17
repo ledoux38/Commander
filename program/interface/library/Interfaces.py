@@ -42,8 +42,8 @@ class MainWindow(Tk):
 
         text: StringVar = StringVar(labelframe)
         Label(labelframe, text="IP: ").pack(side=LEFT)
-        entry_ip = Entry(labelframe, textvariable=text).pack(side=LEFT)
-        test_connection = Button(labelframe, text="Test", command=partial(self.connexion, text)).pack(side=LEFT)
+        Entry(labelframe, textvariable=text).pack(side=LEFT)
+        Button(labelframe, text="Test", command=partial(self.connexion, text)).pack(side=LEFT)
 
     def connexion(self, text: StringVar):
         result: bool = Utils.Connection_to_IP(text.get(), PORT)
@@ -57,45 +57,47 @@ class MainWindow(Tk):
         labelframe = LabelFrame(self, text="Command")
         labelframe.pack(expand="no")
 
-        text_high: StringVar = StringVar(labelframe)
-        text_high.set("H")
-        text_left: StringVar = StringVar(labelframe)
-        text_left.set("G")
-        text_right: StringVar = StringVar(labelframe)
-        text_right.set("D")
-        text_low: StringVar = StringVar(labelframe)
-        text_low.set("B")
-
         widget_high = Button(labelframe, text="H")
         widget_high.grid(row=0, column=1)
-        widget_high.bind('<ButtonPress-1>', self.send(text_high))
-        widget_high.bind('<ButtonRelease-1>', self.send(text_high))
+        widget_high.bind('<ButtonPress-1>', self.send_high)
+        widget_high.bind('<ButtonRelease-1>', self.send_stop)
 
-        widget_left = Button(labelframe, text="G")
-        widget_left.grid(row=1, column=0)
-        widget_left.bind('<ButtonPress-1>', self.send(text_high))
-        widget_left.bind('<ButtonRelease-1>', self.send(text_high))
+        widget_rotation_left = Button(labelframe, text="RG")
+        widget_rotation_left.grid(row=1, column=0)
+        widget_rotation_left.bind('<ButtonPress-1>', self.send_rotation_left)
+        widget_rotation_left.bind('<ButtonRelease-1>', self.send_stop)
 
-        widget_right = Button(labelframe, text="D")
-        widget_right.grid(row=1, column=2)
-        widget_right.bind('<ButtonPress-1>', self.send(text_high))
-        widget_right.bind('<ButtonRelease-1>', self.send(text_high))
+        widget_rotation_right = Button(labelframe, text="RD")
+        widget_rotation_right.grid(row=1, column=2)
+        widget_rotation_right.bind('<ButtonPress-1>', self.send_rotation_right)
+        widget_rotation_right.bind('<ButtonRelease-1>', self.send_stop)
 
         widget_low = Button(labelframe, text="B")
         widget_low.grid(row=2, column=1)
-        widget_low.bind('<ButtonPress-1>', self.send(text_high))
-        widget_low.bind('<ButtonRelease-1>', self.send(text_high))
+        widget_low.bind('<ButtonPress-1>', self.send_low)
+        widget_low.bind('<ButtonRelease-1>', self.send_stop)
 
-    # def Send(self, order: StringVar):
-    #     url = "http://192.168.1.12/" + order.get()
-    #     payload = {}
-    #     headers = {
-    #         'content-type': 'application/json'
-    #     }
-    #
-    #     response = requests.request("POST", url, headers=headers, data=payload)
-    #
-    #     print(response.text)
+    def send_high(self, event: Event):
+        self.send_request("H")
 
-    def send(self, event: Event, text: StringVar):
-        print(str.format("{0}::{1}", event, text))
+    def send_low(self, event: Event):
+        self.send_request("L")
+
+    def send_rotation_right(self, event: Event):
+        self.send_request("RD")
+
+    def send_rotation_left(self, event: Event):
+        self.send_request("RG")
+
+    def send_stop(self, event: Event):
+        self.send_request("S")
+
+    def send_request(self, order: str):
+        url = "http://192.168.1.12/" + order
+        payload = {}
+        headers = {
+            'content-type': 'application/json'
+        }
+        response = requests.request("POST", url, headers=headers, data=payload)
+
+        print(response.text)
